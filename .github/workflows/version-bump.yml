@@ -1,0 +1,40 @@
+name: 自动更新版本号
+
+# 当有代码推送到 main 分支时触发
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  bump-version:
+    # 只有当不是版本更新的提交时才运行（避免无限循环）
+    if: "!startsWith(github.event.head_commit.message, 'ci: version bump')"
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # 需要写权限来更新 package.json 和创建 tag
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # 获取完整的 git 历史
+      
+      - name: 自动更新版本号
+        uses: phips28/gh-action-bump-version@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # 根据提交信息中的关键词来决定版本更新类型
+          major-wording: 'BREAKING CHANGE,major,重大更新,破坏性更改'
+          minor-wording: 'feat,feature,新功能,add,添加,新增'
+          patch-wording: 'fix,修复,patch,补丁,bug'
+          # 默认为 patch 版本更新
+          default: 'patch'
+          # 给 git tag 加上 v 前缀
+          tag-prefix: 'v'
+          # 自定义提交信息
+          commit-message: 'ci: version bump to {{version}}'
