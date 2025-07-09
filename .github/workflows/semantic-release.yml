@@ -48,7 +48,19 @@ jobs:
           cache: 'npm'
       
       - name: 安装依赖
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "使用 npm ci 安装依赖"
+            npm ci
+          else
+            echo "使用 npm install 安装依赖"
+            npm install
+          fi
+      
+      - name: 验证依赖安装
+        run: |
+          echo "检查 semantic-release 是否安装成功"
+          npx semantic-release --version
       
       - name: 语义化版本发布
         uses: cycjimmy/semantic-release-action@v4
