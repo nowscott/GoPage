@@ -6,6 +6,13 @@
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/) 规范。
 
 
+## [2.3.3](https://github.com/nowscott/GoPage/compare/v2.3.2...v2.3.3) (2025-07-09)
+
+
+### 👷 持续集成
+
+* **github:** 将pull_request改为pull_request_target并添加条件 ([484460f](https://github.com/nowscott/GoPage/commit/484460f7ba3053a6d7e244f5cbaf886d9f5f729a))
+
 ## [2.3.2](https://github.com/nowscott/GoPage/compare/v2.3.1...v2.3.2) (2025-07-09)
 
 
