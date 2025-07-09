@@ -63,11 +63,6 @@ jobs:
           npx semantic-release --version
       
       - name: 语义化版本发布
-        uses: cycjimmy/semantic-release-action@v4
-        with:
-          extra_plugins: |
-            @semantic-release/changelog@6.0.3
-            @semantic-release/git@10.0.1
-            @semantic-release/release-notes-generator@12.1.0
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
