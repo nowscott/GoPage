@@ -3,7 +3,7 @@ require('dotenv').config({ path: '.env.local' });
 const { generateHTML } = require('./lib/template');
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
   const targetUrl = process.env.TARGET_URL;
