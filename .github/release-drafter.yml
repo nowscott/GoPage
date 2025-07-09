@@ -1,0 +1,140 @@
+# Release Drafter 配置文件
+# 用于自动生成发布说明草稿
+
+name-template: 'v$RESOLVED_VERSION 🚀'
+tag-template: 'v$RESOLVED_VERSION'
+
+# 版本解析规则
+version-resolver:
+  major:
+    labels:
+      - 'breaking'
+      - 'major'
+      - '重大更新'
+      - '破坏性更改'
+  minor:
+    labels:
+      - 'feature'
+      - 'feat'
+      - 'enhancement'
+      - '新功能'
+      - '功能增强'
+      - '优化'
+  patch:
+    labels:
+      - 'bug'
+      - 'fix'
+      - 'bugfix'
+      - 'patch'
+      - '修复'
+      - '补丁'
+  default: patch
+
+# 分类配置
+categories:
+  - title: '🚀 新功能'
+    labels:
+      - 'feature'
+      - 'feat'
+      - 'enhancement'
+      - '新功能'
+      - '功能增强'
+      - '优化'
+  - title: '🐛 Bug 修复'
+    labels:
+      - 'bug'
+      - 'fix'
+      - 'bugfix'
+      - '修复'
+      - 'hotfix'
+      - '紧急修复'
+  - title: '📚 文档更新'
+    labels:
+      - 'documentation'
+      - 'docs'
+      - '文档'
+  - title: '🎨 样式改进'
+    labels:
+      - 'style'
+      - 'ui'
+      - 'ux'
+      - '样式'
+      - '界面'
+  - title: '⚡ 性能优化'
+    labels:
+      - 'performance'
+      - 'perf'
+      - '性能'
+  - title: '🔧 维护更新'
+    labels:
+      - 'maintenance'
+      - 'chore'
+      - 'refactor'
+      - '重构'
+      - '维护'
+  - title: '🧪 测试相关'
+    labels:
+      - 'test'
+      - 'testing'
+      - '测试'
+  - title: '🔒 安全更新'
+    labels:
+      - 'security'
+      - '安全'
+
+# 排除标签（不会出现在发布说明中）
+exclude-labels:
+  - 'skip-changelog'
+  - 'duplicate'
+  - 'invalid'
+  - 'wontfix'
+  - 'dependencies'
+
+# 变更模板
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&'
+
+# 无变更时的模板
+no-changes-template: '- 本版本无重要变更'
+
+# 发布说明模板
+template: |
+  ## 📋 更新内容
+  
+  $CHANGES
+  
+  ## 👥 贡献者
+  
+  感谢以下贡献者的努力：$CONTRIBUTORS
+  
+  ---
+  
+  **完整变更日志**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
+# 自动标签配置
+autolabeler:
+  - label: 'feature'
+    title:
+      - '/^feat(\(.+\))?!?:.+/'
+      - '/^新功能.*/'
+  - label: 'bug'
+    title:
+      - '/^fix(\(.+\))?!?:.+/'
+      - '/^修复.*/'
+  - label: 'documentation'
+    title:
+      - '/^docs(\(.+\))?!?:.+/'
+      - '/^文档.*/'
+    files:
+      - '*.md'
+      - 'docs/**/*'
+  - label: 'performance'
+    title:
+      - '/^perf(\(.+\))?!?:.+/'
+      - '/^性能.*/'
+  - label: 'maintenance'
+    title:
+      - '/^chore(\(.+\))?!?:.+/'
+      - '/^refactor(\(.+\))?!?:.+/'
+      - '/^重构.*/'
+      - '/^维护.*/'

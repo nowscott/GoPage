@@ -1,0 +1,61 @@
+name: 自动版本管理和发布
+
+# 当有代码推送到 main 分支时触发
+on:
+  push:
+    branches:
+      - main
+      - master
+  # 支持 PR 事件用于 Release Drafter
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  # Release Drafter - 自动生成发布草稿
+  draft_release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: 生成发布草稿
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Semantic Release - 自动版本管理和发布
+  semantic_release:
+    # 只有当不是版本更新的提交时才运行（避免无限循环）
+    if: "!startsWith(github.event.head_commit.message, 'chore(release):') && github.event_name == 'push'"
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # 获取完整的 git 历史
+      
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: 安装依赖
+        run: npm ci
+      
+      - name: 语义化版本发布
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          extra_plugins: |
+            @semantic-release/changelog@6.0.3
+            @semantic-release/git@10.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
