@@ -29,9 +29,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # 根据提交信息中的关键词来决定版本更新类型
-          major-wording: 'BREAKING CHANGE,major,重大更新,破坏性更改'
-          minor-wording: 'feat,feature,新功能,add,添加,新增'
-          patch-wording: 'fix,修复,patch,补丁,bug'
+          major-wording: 'BREAKING CHANGE,major,重大更新,破坏性更改,breaking,重构'
+          minor-wording: 'feat,feature,新功能,add,添加,新增,enhance,优化,improve,改进,update,更新'
+          patch-wording: 'fix,修复,patch,补丁,bug,hotfix,紧急修复,refactor,重构,style,样式,docs,文档,test,测试'
           # 默认为 patch 版本更新
           default: 'patch'
           # 给 git tag 加上 v 前缀
